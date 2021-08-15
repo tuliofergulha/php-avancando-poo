@@ -1,9 +1,11 @@
 <?php
 
-class Conta{
+namespace Alura\Banco\Modelo\Conta;
 
+abstract class Conta
+{
     private Titular $titular;
-    private float $saldo;
+    protected float $saldo;
     private static $numeroDeContas = 0;
 
     public function __construct(Titular $titular){
@@ -17,12 +19,15 @@ class Conta{
         self::$numeroDeContas--;
     }
 
-    public function saca(float $valor): void{
-        if ($valor > $this->saldo){
+    public function saca(float $valor): void
+    {
+        $tarifaSaque= $valor * $this->getTarifa();
+        $valorSaque = $valor + $tarifaSaque;
+        if ($valorSaque > $this->saldo){
             echo "Saldo indisponível.";
             return;
         }
-        $this->saldo -= $valor;
+        $this->saldo -= $valorSaque;
     }
 
     public function deposita(float $valor): void{
@@ -31,15 +36,6 @@ class Conta{
             return;
         }
        $this->saldo += $valor;
-    }
-
-    public function transferi(float $valor, Conta $contaDestino): void {
-        if ($valor > $this->saldo){
-            echo "Saldo indisponível.";
-            return;
-        }
-        $this->sacar($valor);
-        $contaDestino->depositar($valor);
     }
 
     public function getSaldo(): float {
@@ -55,6 +51,8 @@ class Conta{
     }
 
     public function getCpfTitular(): string{
-        return $this->titular->getNumeroCpf();
+        return $this->titular->getCpf();
     }
+
+    abstract protected function getTarifa(): float;
 }

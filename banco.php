@@ -1,9 +1,12 @@
 <?php
 
-require 'src/Conta.php';
-require 'src/Endereco.php';
-require 'src/Titular.php';
-require 'src/CPF.php';
+require_once 'autoload.php';
+
+use Alura\Banco\Modelo\CPF;
+use Alura\Banco\Modelo\Endereco;
+use Alura\Banco\Modelo\Conta\Titular;
+use Alura\Banco\Modelo\Conta\Conta;
+
 
 $endereco = new Endereco("Capivari", "um bairro", "121");
 $tulio = new Titular(new CPF('123.456.789-10'), 'Tulio Fergulha', $endereco);
